@@ -1,38 +1,38 @@
 #include "main.h"
 
 /**
- * tget_error - this calls the error according the builtin
- * @tdatash: this data structure that contains arguments
- * @teval: this error value
- * Return: terror
+ * get_error - this calls the error according the builtin
+ * @datash: this data structure that contains arguments
+ * @eval: this error value
+ * Return: error the error
  */
-int tget_error(data_shell *tdatash, int teval)
+int get_error(data_shell *datash, int eval)
 {
-	char *terror;
+	char *error;
 
-	switch (teval)
+	switch (eval)
 	{
 		case -1:
-			error = error_env(tdatash);
+			error = error_env(datash);
 			break;
 		case 126:
-			error = error_path_126(tdatash);
+			error = error_path_126(datash);
 			break;
 		case 127:
-			error = error_not_found(tdatash);
+			error = error_not_found(datash);
 			break;
 		case 2:
-			if (_strcmp("exit", tdatash->args[0]) == 0)
-				terror = error_exit_shell(tdatash);
-			else if (_strcmp("cd", tdatash->args[0]) == 0)
-				terror = error_get_cd(tdatash);
+			if (_strcmp("exit", datash->args[0]) == 0)
+				error = error_exit_shell(datash);
+			else if (_strcmp("cd", datash->args[0]) == 0)
+				error = error_get_cd(datash);
 			break;
 	}
-	if (terror)
+	if (error)
 	{
-		write(STDERR_FILENO, terror, _strlen(terror));
-		free(terror);
+		write(STDERR_FILENO, error, _strlen(error));
+		free(error);
 	}
-	tdatash->status = teval;
-	return (teval);
+	datash->status = eval;
+	return (eval);
 }

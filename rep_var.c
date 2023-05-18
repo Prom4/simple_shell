@@ -1,18 +1,18 @@
 #include "main.h"
 
 /**
- * tcheck_env - verifies if variable is an env variable
- * @th: the head of linked list
- * @tin: the input string
- * @tdata: the data structure
+ * check_env - verifies if variable is an env variable
+ * @h: the head of linked list
+ * @in: the input string
+ * @data: the data structure
  * Return: no return
  */
-void tcheck_env(r_var **th, char *tin, data_shell *tdata)
+void check_env(r_var **h, char *in, data_shell *data)
 {
 	int row, chr, j, lval;
 	char **_envr;
 
-	_envr = tdata->_environ;
+	_envr = data->_environ;
 	for (row = 0; _envr[row]; row++)
 	{
 		for (j = 1, chr = 0; _envr[row][chr]; chr++)
@@ -20,7 +20,7 @@ void tcheck_env(r_var **th, char *tin, data_shell *tdata)
 			if (_envr[row][chr] == '=')
 			{
 				lval = _strlen(_envr[row] + chr + 1);
-				add_rvar_node(th, j, _envr[row] + chr + 1, lval);
+				add_rvar_node(h, j, _envr[row] + chr + 1, lval);
 				return;
 			}
 
@@ -36,72 +36,72 @@ void tcheck_env(r_var **th, char *tin, data_shell *tdata)
 		if (in[j] == ' ' || in[j] == '\t' || in[j] == ';' || in[j] == '\n')
 			break;
 	}
-	add_rvar_node(th, j, NULL, 0);
+	add_rvar_node(h, j, NULL, 0);
 }
 
 /**
- * tcheck_vars - this checks if variable is $$ or $?
+ * check_vars - this checks if variable is $$ or $?
  *
- * @th: the linked list's head
- * @tin: string input
- * @tst: the shell's last status
- * @tdata: this is the data structure
+ * @h: the linked list's head
+ * @in: string input
+ * @st: the shell's last status
+ * @data: this is the data structure
  * Return: no return
  */
-int tcheck_vars(r_var **th, char *tin, char *tst, data_shell *tdata)
+int check_vars(r_var **h, char *in, char *st, data_shell *data)
 {
 	int i, lst, lpd;
 
-	lst = _strlen(tst);
-	lpd = _strlen(tdata->pid);
+	lst = _strlen(st);
+	lpd = _strlen(data->pid);
 
 	for (i = 0; in[i]; i++)
 	{
 		if (in[i] == '$')
 		{
 			if (in[i + 1] == '?')
-				add_rvar_node(th, 2, tst, lst), i++;
+				add_rvar_node(h, 2, st, lst), i++;
 			else if (in[i + 1] == '$')
-				add_rvar_node(th, 2, data->pid, lpd), i++;
+				add_rvar_node(h, 2, data->pid, lpd), i++;
 			else if (in[i + 1] == '\n')
-				add_rvar_node(th, 0, NULL, 0);
+				add_rvar_node(h, 0, NULL, 0);
 			else if (in[i + 1] == '\0')
-				add_rvar_node(th, 0, NULL, 0);
+				add_rvar_node(h, 0, NULL, 0);
 			else if (in[i + 1] == ' ')
-				add_rvar_node(th, 0, NULL, 0);
+				add_rvar_node(h, 0, NULL, 0);
 			else if (in[i + 1] == '\t')
-				add_rvar_node(th, 0, NULL, 0);
+				add_rvar_node(h, 0, NULL, 0);
 			else if (in[i + 1] == ';')
-				add_rvar_node(th, 0, NULL, 0);
+				add_rvar_node(h, 0, NULL, 0);
 			else
-				check_env(th, tin + i, tdata);
+				check_env(h, in + i, data);
 		}
 	}
 	return (i);
 }
 
 /**
- * treplaced_input - this replaces the string into variables
+ * replaced_input - this replaces the string into variables
  *
- * @thead: the linked list's head
- * @tinput: string input
- * @tnew_input: new replaced input string
- * @tnlen: the new length
+ * @head: the linked list's head
+ * @input: string input
+ * @new_input: new replaced input string
+ * @nlen: that's new length
  * Return: replaced string
  */
-char *treplaced_input(r_var **thead, char *tinput, char *tnew_input, int tnlen)
+char *replaced_input(r_var **head, char *input, char *new_input, int nlen)
 {
 	r_var *indx;
 	int i, j, k;
 
-	indx = *thead;
-	for (j = i = 0; i < tnlen; i++)
+	indx = *head;
+	for (j = i = 0; i < nlen; i++)
 	{
-		if (tinput[j] == '$')
+		if (input[j] == '$')
 		{
 			if (!(indx->len_var) && !(indx->len_val))
 			{
-				tnew_input[i] = tinput[j];
+				new_input[i] = input[j];
 				j++;
 			}
 			else if (indx->len_var && !(indx->len_val))
@@ -114,7 +114,7 @@ char *treplaced_input(r_var **thead, char *tinput, char *tnew_input, int tnlen)
 			{
 				for (k = 0; k < indx->len_val; k++)
 				{
-					tnew_input[i] = indx->val[k];
+					new_input[i] = indx->val[k];
 					i++;
 				}
 				j += (indx->len_var);
@@ -124,34 +124,34 @@ char *treplaced_input(r_var **thead, char *tinput, char *tnew_input, int tnlen)
 		}
 		else
 		{
-			tnew_input[i] = tinput[j];
+			new_input[i] = input[j];
 			j++;
 		}
 	}
-	return (tnew_input);
+	return (new_input);
 }
 
 /**
- * trep_var - this calls functions replace string with vars
+ * rep_var - this calls functions replace string with vars
  *
- * @tinput: string input
- * @tdatash: the data structure
+ * @input: string input
+ * @datash: the data structure
  * Return: replaced string
  */
-char *trep_var(char *tinput, data_shell *tdatash)
+char *rep_var(char *input, data_shell *datash)
 {
 	r_var *head, *indx;
 	char *status, *new_input;
 	int olen, nlen;
 
-	status = aux_itoa(tdatash->status);
+	status = aux_itoa(datash->status);
 	head = NULL;
 
-	olen = check_vars(&head, tinput, status, tdatash);
+	olen = check_vars(&head, input, status, datash);
 	if (head == NULL)
 	{
 		free(status);
-		return (tinput);
+		return (input);
 	}
 
 	indx = head;
@@ -168,7 +168,7 @@ char *trep_var(char *tinput, data_shell *tdatash)
 	new_input[nlen] = '\0';
 	new_input = replaced_input(&head, input, new_input, nlen);
 
-	free(tinput);
+	free(input);
 	free(status);
 	free_rvar_list(&head);
 	return (new_input);

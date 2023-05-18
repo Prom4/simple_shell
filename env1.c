@@ -1,20 +1,20 @@
 #include "main.h"
 
 /**
- * tcmp_env_name - this section compares env names
+ * cmp_env_name - this section compares env names
  * when the names are passed
- * @tnenv: this is the environment variable
- * @tname: this is the passed name
+ * @nenv: this is the environment variable
+ * @name: this is the passed name
  *
- * Return: 0 if are not equal. Another value if they are.
+ * Return: 0 if are not equal else another value
  */
-int tcmp_env_name(const char *tnenv, const char *tname)
+int cmp_env_name(const char *nenv, const char *name)
 {
 	int i;
 
 	for (i = 0; nenv[i] != '='; i++)
 	{
-	if (tnenv[i] != tname[i])
+	if (nenv[i] != name[i])
 	{
 		return (0);
 }
@@ -23,53 +23,53 @@ return (i + 1);
 }
 
 /**
- * _tgetenv - this gets an environment variable
- * @tname: this gives the name of the environment variable
- * @_tenviron: this is the environment variable
+ * _getenv - this gets an environment variable
+ * @name: this gives the name of the environment variable
+ * @_environ: this is the environment variable
  *
  * Return: the value of the environment variable if it is found successfully.
  * else, returns NULL.
  */
-char *_tgetenv(const char *tname, char **_tenviron)
+char *_getenv(const char *name, char **_environ)
 {
-	char *tptr_env;
+	char *ptr_env;
 	int i, move;
 
-	/* Initialize ptr_env value */
-	tptr_env = NULL;
+	/* Initializing ptr_env value */
+	ptr_env = NULL;
 	move = 0;
 	/* Compare all environment variables */
 	/* environ is declared in the header file */
 	for (i = 0; _environ[i]; i++)
 	{
 		/* If name and env are equal */
-		move = tcmp_env_name(_environ[i], tname);
+		move = cmp_env_name(_environ[i], name);
 		if (move)
 		{
-			tptr_env = _tenviron[i];
+			ptr_env = _environ[i];
 			break;
 		}
 	}
-	return (tptr_env + move);
+	return (ptr_env + move);
 }
 
 /**
- * _tenv - this actually prints the evironment variables
+ * _env - this actually prints the evironment variables
  *
- * @tdatash: the relevant data.
+ * @datash: the relevant data.
  * Return: 1 on success.
  */
-int _tenv(data_shell *tdatash)
+int _env(data_shell *datash)
 {
 	int i, j;
 
-	for (i = 0; tdatash->_tenviron[i]; i++)
+	for (i = 0; datash->_environ[i]; i++)
 	{
-		for (j = 0; tdatash->_tenviron[i][j]; j++)
+		for (j = 0; datash->_environ[i][j]; j++)
 			;
-		write(STDOUT_FILENO, tdatash->_tenviron[i], j);
+		write(STDOUT_FILENO, datash->_environ[i], j);
 		write(STDOUT_FILENO, "\n", 1);
 	}
-	tdatash->status = 0;
+	datash->status = 0;
 	return (1);
 }

@@ -1,15 +1,15 @@
 #include "main.h"
 
 /**
- * tread_line - this takes input string.
- * @ti_eof: this returns value of getline
+ * read_line - this takes input string.
+ * @i_eof: this returns value of getline
  * Return: string inputted
  */
-char *tread_line(int *ti_eof)
+char *read_line(int *i_eof)
 {
-	char *tinput = NULL;
-	size_t tbufsize = 0;
+	char *input = NULL;
+	size_t bufsize = 0;
 
-	*ti_eof = getline(&tinput, &tbufsize, stdin);
-	return (tinput);
+	*i_eof = getline(&input, &bufsize, stdin);
+	return (input);
 }

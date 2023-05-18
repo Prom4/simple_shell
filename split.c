@@ -1,32 +1,32 @@
 #include "main.h"
 
 /**
- * tswap_char - this swaps | and & for non-printed chars
+ * swap_char - this swaps | and & for non-printed chars
  *
- * @tinput: string input
- * @tbool: type of swap
+ * @input: string input
+ * @bool: type of swap
  * Return: swapped string
  */
-char *tswap_char(char *tinput, int tbool)
+char *swap_char(char *input, int bool)
 {
 	int i;
 
-	if (tbool == 0)
+	if (bool == 0)
 	{
-		for (i = 0; tinput[i]; i++)
+		for (i = 0; input[i]; i++)
 		{
-			if (tinput[i] == '|')
+			if (input[i] == '|')
 			{
-				if (tinput[i + 1] != '|')
-					tinput[i] = 16;
+				if (input[i + 1] != '|')
+					input[i] = 16;
 				else
 					i++;
 			}
 
-			if (tinput[i] == '&')
+			if (input[i] == '&')
 			{
-				if (tinput[i + 1] != '&')
-					tinput[i] = 12;
+				if (input[i + 1] != '&')
+					input[i] = 12;
 				else
 					i++;
 			}
@@ -34,43 +34,43 @@ char *tswap_char(char *tinput, int tbool)
 	}
 	else
 	{
-		for (i = 0; tinput[i]; i++)
+		for (i = 0; input[i]; i++)
 		{
-			tinput[i] = (tinput[i] == 16 ? '|' : tinput[i]);
-			tinput[i] = (tinput[i] == 12 ? '&' : tinput[i]);
+			input[i] = (input[i] == 16 ? '|' : input[i]);
+			input[i] = (input[i] == 12 ? '&' : input[i]);
 		}
 	}
-	return (tinput);
+	return (input);
 }
 
 /**
- * tadd_nodes - this add separators and command lines in lists
+ * add_nodes - this add separators and command lines in lists
  *
- * @thead_s: the head of separator list
- * @thead_l: head of command lines list
- * @tinput: string input
- * Return: no return
+ * @head_s: the head of separator list
+ * @head_l: head of command lines list
+ * @input: string input
+ * Return: return nothing
  */
-void tadd_nodes(sep_list **thead_s, line_list **thead_l, char *tinput)
+void add_nodes(sep_list **head_s, line_list **head_l, char *input)
 {
 	int i;
 	char *line;
 
-	tinput = swap_char(tinput, 0);
+	input = swap_char(input, 0);
 
-	for (i = 0; tinput[i]; i++)
+	for (i = 0; input[i]; i++)
 	{
-		if (tinput[i] == ';')
-			add_sep_node_end(thead_s, tinput[i]);
+		if (input[i] == ';')
+			add_sep_node_end(head_s, input[i]);
 
-		if (tinput[i] == '|' || tinput[i] == '&')
+		if (input[i] == '|' || input[i] == '&')
 		{
-			add_sep_node_end(thead_s, tinput[i]);
+			add_sep_node_end(head_s, input[i]);
 			i++;
 		}
 	}
 
-	line = _strtok(tinput, ";|&");
+	line = _strtok(input, ";|&");
 	do {
 		line = swap_char(line, 1);
 		add_line_node_end(head_l, line);
@@ -79,14 +79,14 @@ void tadd_nodes(sep_list **thead_s, line_list **thead_l, char *tinput)
 }
 
 /**
- * tgo_next - this goes to the next command line
+ * go_next - this goes to the next command line
  *
- * @tlist_s: the separator list
- * @tlist_l: the command line list
- * @tdatash: the data structure
+ * @list_s: the separator list
+ * @list_l: the command line list
+ * @datash: the data structure
  * Return: no return
  */
-void tgo_next(sep_list **tlist_s, line_list **tlist_l, data_shell *tdatash)
+void go_next(sep_list **list_s, line_list **list_l, data_shell *datash)
 {
 	int loop_sep;
 	sep_list *ls_s;
@@ -99,7 +99,7 @@ void tgo_next(sep_list **tlist_s, line_list **tlist_l, data_shell *tdatash)
 
 	while (ls_s != NULL && loop_sep)
 	{
-		if (tdatash->status == 0)
+		if (datash->status == 0)
 		{
 			if (ls_s->separator == '&' || ls_s->separator == ';')
 				loop_sep = 0;
@@ -116,19 +116,19 @@ void tgo_next(sep_list **tlist_s, line_list **tlist_l, data_shell *tdatash)
 		if (ls_s != NULL && !loop_sep)
 			ls_s = ls_s->next;
 	}
-	*tlist_s = ls_s;
-	*tlist_l = ls_l;
+	*list_s = ls_s;
+	*list_l = ls_l;
 }
 
 /**
- * tsplit_commands - this splits command lines according to
+ * split_commands - this splits command lines according to
  * the separators ;, | and &, and executes them
  *
- * @tdatash: the data structure
- * @tinput: the input string
- * Return: 0 to exit, 1 to continue
+ * @datash: the data structure
+ * @input: the input string
+ * Return: 0 on exit, 1 on continue
  */
-int tsplit_commands(data_shell *tdatash, char *tinput)
+int split_commands(data_shell *datash, char *input)
 {
 	sep_list *head_s, *list_s;
 	line_list *head_l, *list_l;
@@ -144,15 +144,15 @@ int tsplit_commands(data_shell *tdatash, char *tinput)
 
 	while (list_l != NULL)
 	{
-		tdatash->input = list_l->line;
-		tdatash->args = split_line(tdatash->input);
-		loop = exec_line(tdatash);
-		free(tdatash->args);
+		datash->input = list_l->line;
+		datash->args = split_line(datash->input);
+		loop = exec_line(datash);
+		free(datash->args);
 
 		if (loop == 0)
 			break;
 
-		go_next(&list_s, &list_l, tdatash);
+		go_next(&list_s, &list_l, datash);
 
 		if (list_l != NULL)
 			list_l = list_l->next;
@@ -167,12 +167,12 @@ int tsplit_commands(data_shell *tdatash, char *tinput)
 }
 
 /**
- * tsplit_line - the tokenizes the input string
+ * split_line - this tokenizes the string inputted
  *
- * @tinput: tinput string.
- * Return: string splitted.
+ * @input: the input string.
+ * Return: splitted string
  */
-char **tsplit_line(char *tinput)
+char **split_line(char *input)
 {
 	size_t bsize;
 	size_t i;

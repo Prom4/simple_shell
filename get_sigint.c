@@ -1,10 +1,10 @@
 #include "main.h"
 
 /**
- * tget_sigint - takes care of Ctrl + c
- * @tsig: the signal handler
+ * get_sigint - in prompt takes care of Ctrl + c
+ * @sig: the signal handler
  */
-void tget_sigint(int tsig)
+void get_sigint(int sig)
 {
 	(void)sig;
 	write(STDOUT_FILENO, "\n^-^ ", 5);

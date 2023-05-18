@@ -1,68 +1,68 @@
 #include "main.h"
 
 /**
- * tfree_data - this frees the data structure
- * @tdatash: the data structure
- * Return: no return
+ * free_data - this completely frees the data structure
+ * @datash: the data structure
+ * Return: return nothing
  */
-void tfree_data(data_shell *tdatash)
+void free_data(data_shell *datash)
 {
 	unsigned int i;
 
-	for (i = 0; tdatash->_environ[i]; i++)
+	for (i = 0; datash->_environ[i]; i++)
 	{
-		free(tdatash->_environ[i]);
+		free(datash->_environ[i]);
 	}
 
-	free(tdatash->_environ);
-	free(tdatash->pid);
+	free(datash->_environ);
+	free(datash->pid);
 }
 
 /**
- * tset_data - this Initializes the data structure
- * @tdatash: the data structure
- * @tav: the argument vector
- * Return: no return
+ * set_data - this Initializes the data structure
+ * @datash: the data structure
+ * @av: the argument vector
+ * Return: return nothing
  */
-void tset_data(data_shell *tdatash, char **tav)
+void set_data(data_shell *datash, char **av)
 {
 	unsigned int i;
 
-	tdatash->tav = tav;
-	tdatash->input = NULL;
-	tdatash->args = NULL;
-	tdatash->status = 0;
-	tdatash->counter = 1;
+	datash->av = av;
+	datash->input = NULL;
+	datash->args = NULL;
+	datash->status = 0;
+	datash->counter = 1;
 
 	for (i = 0; environ[i]; i++)
 	{
-		tdatash->_environ = malloc(sizeof(char *) * (i + 1));
+		datash->_environ = malloc(sizeof(char *) * (i + 1));
 	}
 
 	for (i = 0; environ[i]; i++)
 	{
-		tdatash->_environ[i] = _strdup(environ[i]);
+		datash->_environ[i] = _strdup(environ[i]);
 	}
-	tdatash->_environ[i] = NULL;
-	tdatash->pid = aux_itoa(getpid());
+	datash->_environ[i] = NULL;
+	datash->pid = aux_itoa(getpid());
 }
 
 /**
  * main - The Entry point
- * @tac: argument count
- * @tav: argument vector
+ * @ac: argument count
+ * @av: argument vector
  *
  * Return: 0 on success.
  */
-int main(int tac, char **tav)
+int main(int ac, char **av)
 {
-	data_shell tdatash;
-	(void) tac;
+	data_shell datash;
+	(void) ac;
 	signal(SIGINT, get_sigint);
-	set_data(&tdatash, tav);
-	shell_loop(&tdatash);
-	free_data(&tdatash);
-	if (tdatash.status < 0)
+	set_data(&datash, av);
+	shell_loop(&datash);
+	free_data(&datash);
+	if (datash.status < 0)
 		return (255);
-	return (tdatash.status);
+	return (datash.status);
 }

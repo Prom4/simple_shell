@@ -1,44 +1,44 @@
 #include "main.h"
 
 /**
- * twithout_comment - this deletes comments from input
+ * without_comment - this deletes comments from input
  *
- * @tin: string input
+ * @in: string input
  * Return: input without comments
  */
-char *twithout_comment(char *tin)
+char *without_comment(char *in)
 {
 	int i, up_to;
 
 	up_to = 0;
-	for (i = 0; tin[i]; i++)
+	for (i = 0; in[i]; i++)
 	{
-		if (tin[i] == '#')
+		if (in[i] == '#')
 		{
 			if (i == 0)
 			{
-				free(tin);
+				free(in);
 				return (NULL);
 			}
-			if (tin[i - 1] == ' ' || tin[i - 1] == '\t' || tin[i - 1] == ';')
+			if (in[i - 1] == ' ' || in[i - 1] == '\t' || in[i - 1] == ';')
 				up_to = i;
 		}
 	}
 	if (up_to != 0)
 	{
-		tin = _realloc(tin, i, up_to + 1);
+		in = _realloc(in, i, up_to + 1);
 		in[up_to] = '\0';
 	}
-	return (tin);
+	return (in);
 }
 
 /**
- * tshell_loop - the shell loop
- * @tdatash: the data relevant (av, input, args)
+ * shell_loop - the shell loop
+ * @datash: the data relevant (av, input, args)
  *
  * Return: no return.
  */
-void tshell_loop(data_shell *tdatash)
+void shell_loop(data_shell *datash)
 {
 	int loop, i_eof;
 	char *input;
@@ -54,15 +54,15 @@ void tshell_loop(data_shell *tdatash)
 			if (input == NULL)
 				continue;
 
-			if (check_syntax_error(tdatash, input) == 1)
+			if (check_syntax_error(datash, input) == 1)
 			{
-				tdatash->status = 2;
+				datash->status = 2;
 				free(input);
 				continue;
 			}
-			input = rep_var(input, tdatash);
-			loop = split_commands(tdatash, input);
-			tdatash->counter += 1;
+			input = rep_var(input, datash);
+			loop = split_commands(datash, input);
+			datash->counter += 1;
 			free(input);
 		}
 		else

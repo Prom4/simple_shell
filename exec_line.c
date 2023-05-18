@@ -1,19 +1,19 @@
 #include "main.h"
 
 /**
- * texec_line - thisfinds builtins and commands
+ * exec_line - this searches builtins and commands
  *
- * @datas: this is data relevant (args)
+ * @datash: this is data relevant (args)
  * Return: 1 on success.
  */
-int texec_line(data_shell *datas)
+int exec_line(data_shell *datash)
 {
-	int (*builtin)(data_shell *datas);
+	int (*builtin)(data_shell *datash);
 
-	if (datas->args[0] == NULL)
+	if (datash->args[0] == NULL)
 		return (1);
-	builtin = get_builtin(datas->args[0]);
+	builtin = get_builtin(datash->args[0]);
 	if (builtin != NULL)
-		return (builtin(datas));
-	return (cmd_exec(datas));
+		return (builtin(datash));
+	return (cmd_exec(datash));
 }

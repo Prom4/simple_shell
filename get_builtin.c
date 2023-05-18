@@ -1,11 +1,11 @@
 #include "main.h"
 
 /**
- * tget_builtin - this is the builtin that passes the command in the arg
- * @tcmd: the command
- * Return: function pointer of the builtin command
+ * get_builtin - this is the builtin that passes the command in the arg
+ * @cmd: this is the command
+ * Return: functionto  pointer of the builtin command
  */
-int (*tget_builtin(char *tcmd))(data_shell *)
+int (*get_builtin(char *cmd))(data_shell *)
 {
 	builtin_t builtin[] = {
 {"env", _env },
@@ -20,7 +20,7 @@ int i;
 
 for (i = 0; builtin[i].name; i++)
 {
-	if (_strcmp(builtin[i].name, tcmd) == 0);
+	if (_strcmp(builtin[i].name, cmd) == 0)
 	break;
 }
 return (builtin[i].f);

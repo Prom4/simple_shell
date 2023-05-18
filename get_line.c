@@ -1,66 +1,66 @@
 #include "main.h"
 
 /**
- * tbring_line - this assigns line var for get_line
- * @tlineptr: Buffer to store input string
- * @tbuffer: string called to the line
- * @tn: Line size
- * @tj: buffer size
+ * bring_line - this assigns line var to get_line
+ * @lineptr: Buffer made to store input string
+ * @buffer: string called to the line
+ * @n: Line size
+ * @j: buffer size
  */
-void tbring_line(char **tlineptr, size_t *tn, char *tbuffer, size_t tj)
+void bring_line(char **lineptr, size_t *n, char *buffer, size_t j)
 {
-	if (*tlineptr == NULL)
+	if (*lineptr == NULL)
 	{
-		if (tj > BUFSIZE)
-			*tn = tj;
+		if (j > BUFSIZE)
+			*n = j;
 		else
-			*tn = BUFSIZE;
-		*tlineptr = tbuffer;
+			*n = BUFSIZE;
+		*lineptr = buffer;
 	}
-	else if (*tn < tj)
+	else if (*n < j)
 	{
-		if (tj > BUFSIZE)
-			*tn = tj;
+		if (j > BUFSIZE)
+			*n = j;
 		else
-			*tn = BUFSIZE;
-		*tlineptr = tbuffer;
+			*n = BUFSIZE;
+		*lineptr = buffer;
 	}
 	else
 	{
-		_strcpy(*tlineptr, tbuffer);
-		free(tbuffer);
+		_strcpy(*lineptr, buffer);
+		free(buffer);
 	}
 }
 /**
- * tget_line - gets input from the stream
- * @tlineptr: buffer to store input
- * @tn: lineptr size
- * @tstream: source of stream
+ * get_line - gets input from the stream
+ * @lineptr: buffer to store input
+ * @n: lineptr size
+ * @stream: source of stream
  * Return: size in bytes
  */
-ssize_t tget_line(char **tlineptr, size_t *tn, FILE *tstream)
+ssize_t get_line(char **lineptr, size_t *n, FILE *stream)
 {
 	int i;
 	static ssize_t input;
 	ssize_t retval;
-	char *tbuffer;
+	char *buffer;
 	char t = 'z';
 
 	if (input == 0)
-		fflush(tstream);
+		fflush(stream);
 	else
 		return (-1);
 	input = 0;
 
-	tbuffer = malloc(sizeof(char) * BUFSIZE);
-	if (tbuffer == 0)
+	buffer = malloc(sizeof(char) * BUFSIZE);
+	if (buffer == 0)
 		return (-1);
 	while (t != '\n')
 	{
 		i = read(STDIN_FILENO, &t, 1);
 		if (i == -1 || (i == 0 && input == 0))
 		{
-			free(tbuffer);
+			free(buffer);
 			return (-1);
 		}
 		if (i == 0 && input != 0)
@@ -69,14 +69,14 @@ ssize_t tget_line(char **tlineptr, size_t *tn, FILE *tstream)
 			break;
 		}
 		if (input >= BUFSIZE)
-			tbuffer = _realloc(tbuffer, input, input + 1);
-		tbuffer[input] = t;
+			buffer = _realloc(buffer, input, input + 1);
+		buffer[input] = t;
 		input++;
 	}
-	tbuffer[input] = '\0';
-	bring_line(tlineptr, tn, tbuffer, input);
-	tretval = input;
+	buffer[input] = '\0';
+	bring_line(lineptr, n, buffer, input);
+	retval = input;
 	if (i != 0)
 		input = 0;
-	return (tretval);
+	return (retval);
 }
