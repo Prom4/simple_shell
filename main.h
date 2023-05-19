@@ -109,19 +109,19 @@ int _strcmp(char *s1, char *s2);
 char *_strchr(char *s, char c);
 int _strspn(char *s, char *accept);
 
-/* aux_mem.c */
+/* auxs_mem.c */
 void _memcpy(void *newptr, const void *ptr, unsigned int size);
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 char **_reallocdp(char **ptr, unsigned int old_size, unsigned int new_size);
 
-/* aux_str2.c */
+/* auxs_str2.c */
 char *_strdup(const char *s);
 int _strlen(const char *s);
 int cmp_chars(char str[], const char *delim);
 char *_strtok(char str[], const char *delim);
 int _isdigit(const char *s);
 
-/* aux_str3.c */
+/* auxs_str3.c */
 void rev_string(char *s);
 
 /* check_syntax_error.c */
@@ -201,7 +201,7 @@ char *error_get_cd(data_shell *datash);
 char *error_not_found(data_shell *datash);
 char *error_exit_shell(data_shell *datash);
 
-/* aux_error2.c */
+/* auxs_errors2.c */
 char *error_get_alias(char **args);
 char *error_env(data_shell *datash);
 char *error_syntax(char **args);
@@ -215,14 +215,14 @@ int get_error(data_shell *datash, int eval);
 /* get_sigint.c */
 void get_sigint(int sig);
 
-/* aux_help.c */
+/* auxa_helps.c */
 void aux_help_env(void);
 void aux_help_setenv(void);
 void aux_help_unsetenv(void);
 void aux_help_general(void);
 void aux_help_exit(void);
 
-/* aux_help2.c */
+/* auxs_help2.c */
 void aux_help(void);
 void aux_help_alias(void);
 void aux_help_cd(void);
