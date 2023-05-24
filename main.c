@@ -1,9 +1,10 @@
 #include "main.h"
 
 /**
- * free_data - this completely frees the data structure
- * @datash: the data structure
- * Return: return nothing
+ * free_data - freeing data structure
+ *
+ * @datash: data structures
+ * Return: no return
  */
 void free_data(data_shell *datash)
 {
@@ -19,10 +20,11 @@ void free_data(data_shell *datash)
 }
 
 /**
- * set_data - this Initializes the data structure
- * @datash: the data structure
- * @av: the argument vector
- * Return: return nothing
+ * set_data - Initializing data structures
+ *
+ * @datash: data structures
+ * @av: argument vector
+ * Return: no returns
  */
 void set_data(data_shell *datash, char **av)
 {
@@ -35,22 +37,24 @@ void set_data(data_shell *datash, char **av)
 	datash->counter = 1;
 
 	for (i = 0; environ[i]; i++)
-	{
-		datash->_environ = malloc(sizeof(char *) * (i + 1));
-	}
+		;
+
+	datash->_environ = malloc(sizeof(char *) * (i + 1));
 
 	for (i = 0; environ[i]; i++)
 	{
 		datash->_environ[i] = _strdup(environ[i]);
 	}
+
 	datash->_environ[i] = NULL;
 	datash->pid = aux_itoa(getpid());
 }
 
 /**
- * main - The Entry point
- * @ac: argument count
- * @av: argument vector
+ * main - Entrying points
+ *
+ * @ac: arguments counted
+ * @av: arguments vectors
  *
  * Return: 0 on success.
  */
@@ -58,6 +62,7 @@ int main(int ac, char **av)
 {
 	data_shell datash;
 	(void) ac;
+
 	signal(SIGINT, get_sigint);
 	set_data(&datash, av);
 	shell_loop(&datash);

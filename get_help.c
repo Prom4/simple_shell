@@ -1,12 +1,13 @@
 #include "main.h"
 
 /**
- * get_help - retrieves help messages based on builtin
- * @datash: this is the data structure (args and input)
+ * get_help - functions that retrieved help messages according builtins
+ * @datash: datas structures (args and input)
  * Return: Return 0
 */
 int get_help(data_shell *datash)
 {
+
 	if (datash->args[1] == 0)
 		aux_help_general();
 	else if (_strcmp(datash->args[1], "setenv") == 0)
@@ -24,7 +25,9 @@ int get_help(data_shell *datash)
 	else if (_strcmp(datash->args[1], "alias") == 0)
 		aux_help_alias();
 	else
-		write(STDERR_FILENO, datash->args[0], _strlen(datash->args[0]));
+		write(STDERR_FILENO, datash->args[0],
+		      _strlen(datash->args[0]));
+
 	datash->status = 0;
 	return (1);
 }

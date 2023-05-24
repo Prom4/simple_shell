@@ -1,12 +1,12 @@
 #include "main.h"
 
 /**
- * copy_info - this copies the info it is to create
- * to a new env or alias
- * @name: the name either env or alias
- * @value: the value either env or alias
+ * copy_info - copying info to creates
+ * a new env or alia
+ * @name: name (env or alias)
+ * @value: values (env or alias)
  *
- * Return: either new env or new alias.
+ * Return: new env or alias.
  */
 char *copy_info(char *name, char *value)
 {
@@ -21,15 +21,16 @@ char *copy_info(char *name, char *value)
 	_strcat(new, "=");
 	_strcat(new, value);
 	_strcat(new, "\0");
+
 	return (new);
 }
 
 /**
- * set_env - this going to set an environment variable
+ * set_env - setting an environmental variables
  *
- * @name: this is the name of the environment variable
- * @value: the value of the environment variable used
- * @datash: data structure
+ * @name: name of the environment variables
+ * @value: values of the environment variable
+ * @datash: data structures (environ)
  * Return: no return
  */
 void set_env(char *name, char *value, data_shell *datash)
@@ -50,33 +51,37 @@ void set_env(char *name, char *value, data_shell *datash)
 		}
 		free(var_env);
 	}
+
 	datash->_environ = _reallocdp(datash->_environ, i, sizeof(char *) * (i + 2));
 	datash->_environ[i] = copy_info(name, value);
 	datash->_environ[i + 1] = NULL;
 }
 
 /**
- * _setenv - this going to compare env variables names
- * with the name inputted.
- * @datash: data relevant
+ * _setenv - comparing env variables name
+ * with the names passed.
+ * @datash: data relevants (env name and env value)
  *
- * Return: 1 on success.
+ * Return: 1 on successful.
  */
 int _setenv(data_shell *datash)
 {
+
 	if (datash->args[1] == NULL || datash->args[2] == NULL)
 	{
 		get_error(datash, -1);
 		return (1);
 	}
+
 	set_env(datash->args[1], datash->args[2], datash);
+
 	return (1);
 }
 
 /**
- * _unsetenv - this deletes an environment variable
+ * _unsetenv - deleted a environmental variables
  *
- * @datash: data relevant
+ * @datash: data relevanted (env name)
  *
  * Return: 1 on success.
  */

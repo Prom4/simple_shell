@@ -1,18 +1,20 @@
 #include "main.h"
 
 /**
- * bring_line - this assigns line var to get_line
- * @lineptr: Buffer made to store input string
- * @buffer: string called to the line
- * @n: Line size
- * @j: buffer size
+ * bring_line - assigned the lines var for get_line
+ * @lineptr: Buffer that store the input str
+ * @buffer: str that is been calls to line
+ * @n: size of lined
+ * @j: size of buffered
  */
 void bring_line(char **lineptr, size_t *n, char *buffer, size_t j)
 {
+
 	if (*lineptr == NULL)
 	{
-		if (j > BUFSIZE)
+		if  (j > BUFSIZE)
 			*n = j;
+
 		else
 			*n = BUFSIZE;
 		*lineptr = buffer;
@@ -32,11 +34,11 @@ void bring_line(char **lineptr, size_t *n, char *buffer, size_t j)
 	}
 }
 /**
- * get_line - gets input from the stream
- * @lineptr: buffer to store input
- * @n: lineptr size
- * @stream: source of stream
- * Return: size in bytes
+ * get_line - Reading inpts from stream
+ * @lineptr: buffered that stores the input
+ * @n: size of lineptrs
+ * @stream: streamed to read from
+ * Return: The numbers of byte
  */
 ssize_t get_line(char **lineptr, size_t *n, FILE *stream)
 {

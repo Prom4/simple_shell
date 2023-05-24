@@ -1,12 +1,12 @@
 #include "main.h"
 
 /**
- * cmp_env_name - this section compares env names
- * when the names are passed
- * @nenv: this is the environment variable
- * @name: this is the passed name
+ * cmp_env_name - comparing env variables names
+ * with the name passed.
+ * @nenv: name of the environmental variables
+ * @name: name passed
  *
- * Return: 0 if are not equal else another value
+ * Return: 0 if are not equal. Another value if they are.
  */
 int cmp_env_name(const char *nenv, const char *name)
 {
@@ -14,50 +14,52 @@ int cmp_env_name(const char *nenv, const char *name)
 
 	for (i = 0; nenv[i] != '='; i++)
 	{
-	if (nenv[i] != name[i])
-	{
-		return (0);
-}
-}
-return (i + 1);
+		if (nenv[i] != name[i])
+		{
+			return (0);
+		}
+	}
+
+	return (i + 1);
 }
 
 /**
- * _getenv - this gets an environment variable
- * @name: this gives the name of the environment variable
- * @_environ: this is the environment variable
+ * _getenv - get an enviroment variable
+ * @name: named of the enviroment variable
+ * @_environ: environment variable
  *
- * Return: the value of the environment variable if it is found successfully.
- * else, returns NULL.
+ * Return: valued of the environent variables if is found.
+ * In other case, returns NULLs.
  */
 char *_getenv(const char *name, char **_environ)
 {
 	char *ptr_env;
-	int i, move;
+	int i, mov;
 
-	/* Initializing ptr_env value */
+	/* Initialize ptr_env values */
 	ptr_env = NULL;
-	move = 0;
+	mov = 0;
 	/* Compare all environment variables */
 	/* environ is declared in the header file */
 	for (i = 0; _environ[i]; i++)
 	{
-		/* If name and env are equal */
-		move = cmp_env_name(_environ[i], name);
-		if (move)
+		/* If name and env r equal */
+		mov = cmp_env_name(_environ[i], name);
+		if (mov)
 		{
 			ptr_env = _environ[i];
 			break;
 		}
 	}
-	return (ptr_env + move);
+
+	return (ptr_env + mov);
 }
 
 /**
- * _env - this actually prints the evironment variables
+ * _env - printed ze evironment variabls
  *
- * @datash: the relevant data.
- * Return: 1 on success.
+ * @datash: data relevanet.
+ * Return: 1 on successul.
  */
 int _env(data_shell *datash)
 {
@@ -65,11 +67,14 @@ int _env(data_shell *datash)
 
 	for (i = 0; datash->_environ[i]; i++)
 	{
+
 		for (j = 0; datash->_environ[i][j]; j++)
 			;
+
 		write(STDOUT_FILENO, datash->_environ[i], j);
 		write(STDOUT_FILENO, "\n", 1);
 	}
 	datash->status = 0;
+
 	return (1);
 }
